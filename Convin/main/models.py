@@ -42,7 +42,7 @@ class Task(models.Model):
 
 
 
-    def update_task_desc(type):
+    def update_task_desc(): #updating an existing task desc
 
         try:
             type=int(input('Enter the task type you want to update: '))
@@ -50,38 +50,40 @@ class Task(models.Model):
             print('\nMust be an Integer and non-empty. Try Again!\n')
             return None
 
-        try:
-            desc=input("\nEnter the new task description or Enter 'none' for no changes: ")
-            if not desc:
-                raise ValueError('Empty Description')
-        except ValueError as e:
-            print('\nString must be non-empty\n')
+        if Task.objects.filter(task_type=type).exists():
+
+            try:
+                desc=input("\nEnter the new task description or Enter 'none' for no changes: ")
+                if not desc:
+                    raise ValueError('Empty Description')
+            except ValueError as e:
+                print('\nString must be non-empty\n')
+                return None
+            except TypeError:
+                print('\nMust be a String\n')
+                return None
+
+            obj=Task.objects.get(task_type=type)
+            if(desc!='none'):
+                obj.task_desc=desc
+                obj.save()
+                print('\nChanges Made Successfully.\n')
+
+            else:
+                print('\nNo Changes Made.\n')
+
             return None
-        except TypeError:
-            print('\nMust be a String\n')
-            return None
-
-
-
-        obj=Task.objects.get(task_type=type)
-        if(desc!='none'):
-            obj.task_desc=desc
-            obj.save()
-            print('\nChanges Made Successfully.\n')
 
         else:
-            print('\nNo Changes Made.\n')
-
-        return None
+            print('\nNo such Task exists.\n')
 
 
 
 
-
-    def del_task():
+    def del_task(): #deleting an existing task along with corresponding trackers and throws an error if not
 
         try:
-            task=int(input('Enter the task type you want to Delete'))
+            task=int(input('\nEnter the task type you want to Delete: '))
         except (ValueError,TypeError):
             print('\nMust be an Integer and non-empty. Try Again!')
             return False
@@ -102,9 +104,13 @@ class TaskTracker(models.Model):
     update_type=models.CharField(max_length=7)
     email=models.EmailField(_('email address'), unique=True)
 
-    def create_new_tracker(task_type):
+    def create_new_tracker(task_type): #creates a new tracker
         if(task_type==None):
-            task_type=int(input('Enter the task you want to create a new Tracker for: '))
+            try:
+                task_type=int(input('Enter the task you want to create a new Tracker for: '))
+            except (ValueError,TypeError):
+                print('\nMust be an integer and non-empty\n')
+                return False
 
         if not Task.objects.filter(task_type=task_type).exists():
             print('\nNo such task exists\n')
@@ -146,3 +152,21 @@ class TaskTracker(models.Model):
 
             print('\nTracker created successfully.\n')
             return True
+
+    def del_tracker(): #deletes a particular tracker
+        try:
+            id=input('Enter the email Id to be tracked: ')
+            if not id:
+                raise ValueError('Empty Email Id')
+        except ValueError as e:
+            print('\nString must be non-empty\n')
+            return False
+        except TypeError:
+            print('\nMust be an email\n')
+            return False
+
+        if TaskTracker.objects.filter(email=id).exists():
+            TaskTracker.objects.get(email=id).delete()
+            print('Tracker Deleted Successfully.')
+        else:
+            print('No trackers exist for the email.')

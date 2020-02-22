@@ -139,17 +139,15 @@ CELERYBEAT_SCHEDULE = {
     # },
     "daily_alert": {
         "task": "main.tasks.daily_alert",
-        "schedule":crontab(minute=50, hour=9),
+        "schedule":crontab(minute=50, hour=17),
     },
     "weekly_alert":{
     "task":"main.tasks.weekly_alert",
     "schedule":crontab(0,0,day_of_week='mon'),
-    # "schedule":crontab(minute=51, hour=9),
 
     },
     "monthly_alert":{
     "task":"main.tasks.monthly_alert",
-    # "schedule":crontab(minute=52, hour=9),
     "schedule":crontab(0,0,day_of_month='1')
     },
 }
