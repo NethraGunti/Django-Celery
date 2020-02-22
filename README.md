@@ -7,7 +7,8 @@ Please follow the instructions:
 2. Install the virtualenv requirements
         'cd ../ConvinRepo'
         "using pip3 install -r requirements.txt"
-
+        Also make sure to run 'sudo apt-get install rabbitmq-server'
+        
 3. Open another terminal in the location 'ConvinRepo/Convin'
 
 5. In one terminal run the command "celery -A Convin worker -B --loglevel=info"
