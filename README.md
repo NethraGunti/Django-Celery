@@ -10,7 +10,7 @@ Please follow the instructions:
 
 3. Open another terminal in the location 'ConvinRepo/Convin'
 
-5. In one terminal run the command "celery -A worker -B --loglevel=info"
+5. In one terminal run the command "celery -A Convin worker -B --loglevel=info"
 
 4. In another terminal run the django-server using "python3 manage.py runserver"
 
