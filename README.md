@@ -1,6 +1,6 @@
-# ConvinRepo
+SUMMARY
 
-This project uses Django-Celery-Beat to send scheduled alerts. 
+This project uses Django-Celery-Beat to send scheduled alerts for different alert types.
 
 Please follow the instructions:
 
